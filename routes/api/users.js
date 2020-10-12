@@ -3,7 +3,9 @@ const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
+// const config = require('config');
+const jwtSecret = 'secretCreatedByFaisal'
+
 const { check, validationResult } = require('express-validator');
 const normalize = require('normalize-url');
 
@@ -12,6 +14,10 @@ const User = require('../../models/User');
 // @route    POST api/users
 // @desc     Register user
 // @access   Public
+
+
+// })
+//-xx
 router.post(
   '/',
   [
@@ -69,13 +75,23 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        jwtSecret,
         { expiresIn: '5 days' },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
         }
       );
+
+      // jwt.sign(
+      //   payload,
+      //   config.get('jwtSecret'),
+      //   { expiresIn: '5 days' },
+      //   (err, token) => {
+      //     if (err) throw err;
+      //     res.json({ token });
+      //   }
+      // );
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
